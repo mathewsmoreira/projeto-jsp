@@ -1,0 +1,1 @@
+INSERT INTO public.model_login(login, senha, nome, usuarioadmin, usuario_id) VALUES ('adm', 'HKmRhZE0hnamInPPqwhrJIpWGnU8RK', 'Administrador', true, 1);

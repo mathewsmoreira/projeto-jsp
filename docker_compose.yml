@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+
+  db:
+    build: "./postgres"
+    image: mathewsoliveira/postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pp2mipx9a
+    ports:
+      - 5433:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  tomcat:
+    build: "./tomcat"
+    image: mathewsoliveira/tomcat:latest
+    restart: always
+    volumes:
+      - ./projeto-jsp.war:/usr/local/tomcat/webapps/projeto-jsp.war
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+  
+  
+
+
