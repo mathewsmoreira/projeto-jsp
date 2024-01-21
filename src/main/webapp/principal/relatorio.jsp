@@ -42,7 +42,7 @@
 
 													</div>
 													<div class="card-block">
-														<form class="form-inline" action="<%=request.getContextPath()%>/ServletUsuarioController" method="get" id="formData">
+														<form class="form-inline" action="<%=request.getContextPath() %>/ServletUsuarioController" method="get" id="formData">
 														<input type="hidden" name="acao" id ="acao" value="">
 														  
 														  <div class="input-group mb-2 mr-sm-2">

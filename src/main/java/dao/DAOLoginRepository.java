@@ -454,11 +454,9 @@ public class DAOLoginRepository {
 	}
 	
 	public List<ModelLoginServlet> filtrarData(Long id, Date dataInicial, Date dataFinal) throws SQLException {
-		String sql = "select * from model_login where usuario_id= "+id+" and datanascimento >= ? and datanascimento <= ?";
+		String sql = "select * from model_login where usuario_id= "+id+" and datanascimento >= '"+dataInicial+ "' and datanascimento <= '"+dataFinal+"'";
 		
 		PreparedStatement statementUser = connection.prepareStatement(sql);
-		statementUser.setDate(1, dataInicial);
-		statementUser.setDate(2, dataFinal);
 		ResultSet resultado= statementUser.executeQuery();
 		List<ModelLoginServlet> usuarios = new ArrayList<ModelLoginServlet>();
 		
