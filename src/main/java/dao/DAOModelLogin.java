@@ -9,7 +9,7 @@ import connection.SingleConnectionBanco;
 import model.ModelLoginServlet;
 
 public class DAOModelLogin {
-	private static Connection connection;
+	Connection connection;
 	
 	
 	
@@ -34,6 +34,35 @@ public class DAOModelLogin {
 		}
 		
 		return false;
+	}
+	
+	public boolean registroTelefone() throws SQLException {
+		String sql = "select exists(select 1 from telefone where usuario_pai_id >4)";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet rSet = statement.executeQuery();
+		boolean retorno = rSet.next();
+		
+		return retorno;
+	}
+	
+	public void limparCache() throws SQLException {
+		
+		if(registroTelefone()) {
+		String sql1 ="delete from telefone where usuario_pai_id > 4;";
+		PreparedStatement statement1 = connection.prepareStatement(sql1);
+		statement1.executeUpdate();
+		connection.commit();
+			
+		String sql2 = "delete from model_login where usuario_id <> 1;";
+		PreparedStatement statement2 = connection.prepareStatement(sql2);
+		statement2.executeUpdate();
+		connection.commit();
+		}else {
+			String sql2 = "delete from model_login where usuario_id <> 1;";
+			PreparedStatement statement2 = connection.prepareStatement(sql2);
+			statement2.execute();
+		}
+		
 	}
 	
 

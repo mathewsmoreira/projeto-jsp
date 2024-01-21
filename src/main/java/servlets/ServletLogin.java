@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import model.ModelLoginServlet;
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DAOLoginRepository daoRepository;
+	private DAOModelLogin daoModelLogin;
 
 	public ServletLogin() {
 		super();
@@ -32,6 +34,14 @@ public class ServletLogin extends HttpServlet {
 
 		
 		if(logout !=null && !logout.isEmpty() && logout.equalsIgnoreCase("true")) {
+			daoModelLogin = new DAOModelLogin();
+			try {
+				//this method is to clear the data that visitor users save in the data base
+				daoModelLogin.limparCache();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			request.getSession().invalidate();
 			RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
 			redirecionar.forward(request, response);
