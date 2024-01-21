@@ -45,7 +45,7 @@
 													</div>
 													<div class="card-block">
 														<form class="form-material"
-															action="<%=request.getContextPath()%>/ServletUsuarioController"
+															action="<%=request.getContextPath() %>/ServletUsuarioController"
 															method="post" id="formUser" enctype="multipart/form-data">
 															<input type="hidden" name="acao" id="acao" value="">
 
@@ -126,7 +126,7 @@
 															<div class="form-group form-default form-static-label">
 																<input type="password" name="senha" id="senha"
 																	class="form-control" required="required"
-																	value="${modelLogin.senha}"> <span
+																	value=""> <span
 																	class="form-bar"></span> <label class="float-label">Senha:</label>
 															</div>
 															<div class="form-group form-default form-static-label">

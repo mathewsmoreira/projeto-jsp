@@ -152,8 +152,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				modelLogins = dao.buscarTodosUsuarios(super.getUserLogado(request));
 				
 			}else {
-				java.sql.Date dataI = java.sql.Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial)));
-				java.sql.Date dataF = java.sql.Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal)));
+				
+				java.sql.Date dataI = new java.sql.Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial).getTime());
+				java.sql.Date dataF = new java.sql.Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal).getTime());
 				modelLogins = dao.filtrarData(super.getUserLogado(request), dataI, dataF);
 			}
 				

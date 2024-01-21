@@ -31,7 +31,9 @@ import connection.SingleConnectionBanco;
  * ser�o monitoradas pelo filter
  */
 public class FilterAutenticacao extends HttpFilter implements Filter {
-
+	
+	private static String url="jdbc:postgresql://db:5432/projeto_jsp?autoReconnect=true";
+	//private static String url = "jdbc:postgresql://localhost:5432/curso_jsp";
 	private static Connection connection;
 	private static final long serialVersionUID = 1L;
 
@@ -136,7 +138,7 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 		
 		Flyway flyway = Flyway.configure()
 			    .baselineOnMigrate(true) // Configuração adicional para criar a tabela de histórico
-			    .dataSource("jdbc:postgresql://db:5432/projeto_jsp?autoReconnect=true","postgres","pp2mipx9a")
+			    .dataSource(url,"postgres","pp2mipx9a")
 			    .load();
 		flyway.baseline(); 
 		flyway.migrate();

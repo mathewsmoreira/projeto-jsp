@@ -46,6 +46,8 @@
 														<input type="text" class="form-control"
 															placeholder="Nome do usuario" name="ndBusca" id="ndBusca"
 															aria-label="nome" aria-describedby="basic-addon2">
+														<input type="hidden" name="acao" id="url" value="<%=request.getContextPath()%>/ServletUsuarioController">
+														
 														<div class="input-group-append">
 															<button class="btn btn-success waves-effect waves-light"
 																type="button" onclick="buscarUsuario();">Buscar</button>
@@ -116,7 +118,7 @@
 <script type="text/javascript">
 
 function showEdit(id) {
-		var urlAction = 'http://localhost:8080/projeto-jsp/ServletUsuarioController';
+		var urlAction = document.getElementById("url").value;
 		
 		window.location.href = urlAction + "?acao=buscarId" + "&id="
 				+ id;

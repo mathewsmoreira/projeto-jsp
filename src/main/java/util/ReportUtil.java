@@ -69,107 +69,105 @@ public class ReportUtil implements Serializable {
 
 
 		int cont = 0;
+		org.apache.poi.ss.usermodel.Row linha = sheets.createRow(0);
+		
+		switch (linha.getRowNum()) {
+		case 0: {
 
-		for (int i = 0; i < listdados.size(); i++) {
-			org.apache.poi.ss.usermodel.Row linha = sheets.createRow(i);
+			for (int j = 0; j <= 14; j++) {
+				org.apache.poi.ss.usermodel.Cell celula = linha.createCell(j);
+				switch (celula.getColumnIndex()) {
+				case 0: {
 
-			switch (linha.getRowNum()) {
-			case 0: {
-
-				for (int j = 0; j <= 15; j++) {
-					org.apache.poi.ss.usermodel.Cell celula = linha.createCell(j);
-					switch (celula.getColumnIndex()) {
-					case 0: {
-
-						celula.setCellValue("ID");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 1: {
-						celula.setCellValue("Nome");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 2: {
-						celula.setCellValue("Login");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 3: {
-						celula.setCellValue("Email");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 4: {
-						celula.setCellValue("Senha");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 5: {
-						celula.setCellValue("Usuario Admin");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 6: {
-						celula.setCellValue("Sexo");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 7: {
-						celula.setCellValue("Cep");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 8: {
-						celula.setCellValue("Logradouro");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 9: {
-						celula.setCellValue("Bairro");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 10: {
-						celula.setCellValue("Localidade");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 11: {
-						celula.setCellValue("Uf");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 12: {
-						celula.setCellValue("Numero");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 13: {
-						celula.setCellValue("Complemento");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 14: {
-						celula.setCellValue("Data Nascimento");
-						celula.setCellStyle(style);
-						break;
-					}
-					case 15: {
-						celula.setCellValue("Renda Mensal");
-						celula.setCellStyle(style);
-						break;
-					}
-
-					}
+					celula.setCellValue("ID");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 1: {
+					celula.setCellValue("Nome");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 2: {
+					celula.setCellValue("Login");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 3: {
+					celula.setCellValue("Email");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 4: {
+					celula.setCellValue("Usuario Admin");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 5: {
+					celula.setCellValue("Sexo");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 6: {
+					celula.setCellValue("Cep");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 7: {
+					celula.setCellValue("Logradouro");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 8: {
+					celula.setCellValue("Bairro");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 9: {
+					celula.setCellValue("Localidade");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 10: {
+					celula.setCellValue("Uf");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 11: {
+					celula.setCellValue("Numero");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 12: {
+					celula.setCellValue("Complemento");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 13: {
+					celula.setCellValue("Data Nascimento");
+					celula.setCellStyle(style);
+					break;
+				}
+				case 14: {
+					celula.setCellValue("Renda Mensal");
+					celula.setCellStyle(style);
+					break;
 				}
 
+				}
 			}
-			}
+
+		}
+		}
+
+		for (int i = 0; i < listdados.size(); i++) {
+			linha = sheets.createRow(i+1);
+
+			
 
 			if (linha.getRowNum() > 0) {
 
-				for (int y = 0; y <= 15; y++) {
+				for (int y = 0; y <= 14; y++) {
 					org.apache.poi.ss.usermodel.Cell celula = linha.createCell(y);
 					ModelLoginServlet dados = listdados.get(i);
 
@@ -192,47 +190,43 @@ public class ReportUtil implements Serializable {
 						break;
 					}
 					case 4: {
-						celula.setCellValue(dados.getSenha());
-						break;
-					}
-					case 5: {
 						celula.setCellValue(dados.isUsuarioadmin());
 						break;
 						
 					}
-					case 6: {
+					case 5: {
 						celula.setCellValue(dados.getSexo());
 						break;
 					}
-					case 7: {
+					case 6: {
 						celula.setCellValue(dados.getCep());
 						break;
 					}
-					case 8: {
+					case 7: {
 						celula.setCellValue(dados.getLogradouro());
 						break;
 					}
-					case 9: {
+					case 8: {
 						celula.setCellValue(dados.getBairro());
 						break;
 					}
-					case 10: {
+					case 9: {
 						celula.setCellValue(dados.getLocalidade());
 						break;
 					}
-					case 11: {
+					case 10: {
 						celula.setCellValue(dados.getUf());
 						break;
 					}
-					case 12: {
+					case 11: {
 						celula.setCellValue(dados.getNumero());
 						break;
 					}
-					case 13: {
+					case 12: {
 						celula.setCellValue(dados.getComplemento());
 						break;
 					}
-					case 14: {
+					case 13: {
 						if(dados.getDatanascimento() !=null) {
 							celula.setCellValue(dados.getDatanascimento());
 						}else {
@@ -241,7 +235,7 @@ public class ReportUtil implements Serializable {
 						break;
 						
 					}
-					case 15: {
+					case 14: {
 						celula.setCellValue(dados.getRendamensal());
 						break;
 						
