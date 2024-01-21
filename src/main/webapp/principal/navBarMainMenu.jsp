@@ -5,7 +5,7 @@
 
 
     <nav class="pcoded-navbar">
-    <c:set scope="session" var="isAdmin" value='<%=request.getSession().getAttribute("isAdmin") %>' ></c:set>
+    <!--<c:set scope="session" var="isAdmin" value='<%=request.getSession().getAttribute("isAdmin") %>' ></c:set>-->
                           <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                           <div class="pcoded-inner-navbar main-menu">
                               <div class="">
@@ -62,7 +62,8 @@
                                       </a>
                                       
                                       <ul class="pcoded-submenu">
-                                      <c:if test="${isAdmin}">
+                                      <!--<c:if test="${isAdmin}">
+                                      </c:if>-->
                                           <li class="">
                                               <a href="<%=request.getContextPath() %>/ServletUsuarioController" class="waves-effect waves-dark">
                                                   <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -70,7 +71,6 @@
                                                   <span class="pcoded-mcaret"></span>
                                               </a>
                                           </li>
-                                       </c:if> 
                                           <li class=" ">
                                               <a href="<%=request.getContextPath() %>/ServletUsuarioController?acao=listarUser" class="waves-effect waves-dark">
                                                   <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
