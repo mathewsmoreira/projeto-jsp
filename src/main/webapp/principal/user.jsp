@@ -44,6 +44,7 @@
 														<!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
 													</div>
 													<div class="card-block">
+													<span id="msg">${msg}</span> <br> <br>
 														<form class="form-material"
 															action="<%=request.getContextPath() %>/ServletUsuarioController"
 															method="post" id="formUser" enctype="multipart/form-data">
@@ -164,7 +165,7 @@ if (request.getAttribute("modelLogin") != null) {
 																	<label class="float-label">Cep</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text" class="form-control" placeholder="" required="" id="logradouro" name="logradouro" value="${modelLogin.logradouro }">
+																	<input type="text" class="form-control" placeholder="" required="" id="logradouro" onblur="limitar_caracteres(event)" name="logradouro" value="${modelLogin.logradouro }">
 																	<span class="form-bar"></span>
 																	<label class="float-label">Rua</label>
 																</div>
@@ -174,22 +175,22 @@ if (request.getAttribute("modelLogin") != null) {
 																	<label class="float-label">N°</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text" class="form-control" placeholder="" required="" id="complemento" name="complemento" value="${modelLogin.complemento }">
+																	<input type="text" class="form-control" placeholder="" required="" id="complemento" onblur="limitar_caracteres(event)" name="complemento" value="${modelLogin.complemento }">
 																	<span class="form-bar"></span>
 																	<label class="float-label">Complemento</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text" class="form-control" placeholder="" required="" id="bairro" name="bairro" value="${modelLogin.bairro }">
+																	<input type="text" class="form-control" placeholder="" required="" id="bairro" onblur="limitar_caracteres(event)" name="bairro" value="${modelLogin.bairro }">
 																	<span class="form-bar"></span>
 																	<label class="float-label">Bairro</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text"  class="form-control" required="" placeholder="" id="localidade" name="localidade" value="${modelLogin.localidade }">
+																	<input type="text"  class="form-control" required="" placeholder="" id="localidade" onblur="limitar_caracteres(event)" name="localidade" value="${modelLogin.localidade }">
 																	<span class="form-bar"></span>
 																	<label class="float-label">Cidade</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text" class="form-control" required="" placeholder="" id="uf" name="uf" value="${modelLogin.uf }">
+																	<input type="text" class="form-control" required="" placeholder="" id="uf" onblur="limitar_caracteres(event)" name="uf" value="${modelLogin.uf }">
 																	<span class="form-bar"></span>
 																	<label class="float-label">Estado</label>
 																</div>
@@ -627,6 +628,9 @@ if (request.getAttribute("modelLogin") != null) {
 			  $("#cep").on("input", function() {
 			    var cep = $(this).val();
 			    var numericCep = cep.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+			    
+			    numericCep = numericCep.slice(0, 8);
+
 
 			    $(this).val(numericCep); // Define o valor do campo como somente números
 			  });
@@ -654,7 +658,39 @@ if (request.getAttribute("modelLogin") != null) {
 			  $("#form-material").submit();
 			});
 
-		
+		function limitar_caracteres(event){
+			
+			var elementoId = $(event.target).attr("id");
+			
+			if(elementoId == "logradouro"){
+				var valor = $(event.target).val();
+				
+				valor = valor.slice(0,150);
+				$(event.target).val(valor)
+			}else if(elementoId =="bairro"){
+				var valor = $(event.target).val();
+				
+				valor = valor.slice(0,80);
+				$(event.target).val(valor)
+			}else if(elementoId == "localidade"){
+				var valor = $(event.target).val();
+				
+				valor = valor.slice(0,50);
+				$(event.target).val(valor)
+			}else if(elementoId == "uf"){
+				var valor = $(event.target).val();
+				
+				valor = valor.slice(0,2);
+				$(event.target).val(valor)
+			}else if(elementoId == "complemento"){
+				var valor = $(event.target).val();
+				
+				valor = valor.slice(0,30);
+				$(event.target).val(valor)
+			}
+			
+			
+		}
 		
 	
 		</script>

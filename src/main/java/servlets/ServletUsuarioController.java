@@ -51,6 +51,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("msg", "O registro não foi deletado, tentar novamente!");
 			}
 			
 			request.setAttribute("msg", "Excluido com sucesso!!");
@@ -73,6 +74,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("msg", "O registro não foi salvo, por favor revisar os dados!!");
+				
 			}
 			
 			
@@ -357,6 +360,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 		}else {
 			modelLoginServlet=daoLoginRepository.gravar(modelLoginServlet,super.getUserLogado(request));
+			try {
 			DAOLoginRepository daoModelLogin = new DAOLoginRepository();
 			List<ModelLoginServlet>	modelLogins = new ArrayList<ModelLoginServlet>();
 			
@@ -367,6 +371,18 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			request.setAttribute("msg", "Registro criado com sucesso!!");
 			RequestDispatcher redirecionar = request.getRequestDispatcher("principal/user.jsp");
 			redirecionar.forward(request, response);
+			}catch (Exception e) {
+				e.printStackTrace();
+				DAOLoginRepository daoModelLogin = new DAOLoginRepository();
+				List<ModelLoginServlet>	modelLogins = new ArrayList<ModelLoginServlet>();
+				modelLogins=daoModelLogin.buscarUsuarios(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);					
+				request.setAttribute("modelLogin", modelLoginServlet);
+				request.setAttribute("totalPagina", daoModelLogin.totalPagina(super.getUserLogado(request)));
+				request.setAttribute("msg", "O registro não foi salvo, por favor revise os dados!");
+				RequestDispatcher redirecionar = request.getRequestDispatcher("principal/user.jsp");
+				redirecionar.forward(request, response);
+			}
 			
 		}
 

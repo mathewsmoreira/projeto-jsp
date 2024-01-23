@@ -24,6 +24,7 @@ public class DAOModelLogin {
 	public boolean autenticar(ModelLoginServlet model) throws SQLException {
 		
 		String sql = "select * from model_login where upper(login) = upper(?) and senha = ?";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, model.getLogin());
 		statement.setString(2, model.getSenha());
@@ -32,21 +33,31 @@ public class DAOModelLogin {
 		while(result.next()) {
 			return true;
 		}
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		return false;
+		
 	}
 	
 	public boolean registroTelefone() throws SQLException {
 		String sql = "select exists(select 1 from telefone where usuario_pai_id >4)";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet rSet = statement.executeQuery();
 		boolean retorno = rSet.next();
 		
 		return retorno;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return false;
 	}
 	
 	public void limparCache() throws SQLException {
-		
+		try {
 		if(registroTelefone()) {
 		String sql1 ="delete from telefone where usuario_pai_id > 4;";
 		PreparedStatement statement1 = connection.prepareStatement(sql1);
@@ -61,6 +72,9 @@ public class DAOModelLogin {
 			String sql2 = "delete from model_login where usuario_id <> 1;";
 			PreparedStatement statement2 = connection.prepareStatement(sql2);
 			statement2.execute();
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 	}

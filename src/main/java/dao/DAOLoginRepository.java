@@ -25,7 +25,7 @@ public class DAOLoginRepository {
 	
 	
 	public ModelLoginServlet gravar(ModelLoginServlet modelLoginServlet, long id) throws SQLException {
-		
+		try {
 		if(modelLoginServlet.isNew()) {
 			String sql="INSERT INTO model_login(login, senha, nome, "
 					+ "email, usuario_id ,sexo, cep, logradouro, bairro,"
@@ -116,14 +116,19 @@ public class DAOLoginRepository {
 			return this.pesquisar(modelLoginServlet.getLogin());
 			
 		}
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 				
-		
+		return null;
 
 	}
 	
-	public ModelLoginServlet pesquisar(String login) throws SQLException {
+	public ModelLoginServlet pesquisar(String login) throws SQLException{
 		ModelLoginServlet model = new ModelLoginServlet();
-		String sql="SELECT * FROM model_login where upper(login) = upper(?) and usuarioadmin = false";		
+		String sql="SELECT * FROM model_login where upper(login) = upper(?) and usuarioadmin = false";	
+		try {
 		PreparedStatement statement= connection.prepareStatement(sql);
 		statement.setString(1, login);
 		ResultSet resultado = statement.executeQuery();
@@ -147,9 +152,13 @@ public class DAOLoginRepository {
 			model.setDatanascimento(resultado.getDate("datanascimento"));
 			model.setRendamensal(resultado.getDouble("rendamensal"));
 			
+			
 			return model;			
 		}
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		
 		return model;
 	}
@@ -158,7 +167,8 @@ public class DAOLoginRepository {
 	
 	public ModelLoginServlet pesquisarSession(String login) throws SQLException {
 		ModelLoginServlet model = new ModelLoginServlet();
-		String sql="SELECT * FROM model_login where upper(login) = upper(?)";		
+		String sql="SELECT * FROM model_login where upper(login) = upper(?)";
+		try {
 		PreparedStatement statement= connection.prepareStatement(sql);
 		statement.setString(1, login);
 		ResultSet resultado = statement.executeQuery();
@@ -186,14 +196,18 @@ public class DAOLoginRepository {
 			
 			return model;			
 		}
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		
 		return model;
 	}
 	
 	public ModelLoginServlet pesquisarId(String id) throws SQLException {
 		ModelLoginServlet model = new ModelLoginServlet();
-		String sql="SELECT * FROM model_login where id = ? and usuarioadmin =false";		
+		String sql="SELECT * FROM model_login where id = ? and usuarioadmin =false";	
+		try {
 		PreparedStatement statement= connection.prepareStatement(sql);
 		statement.setLong(1, Long.parseLong(id));
 		ResultSet resultado = statement.executeQuery();
@@ -219,14 +233,18 @@ public class DAOLoginRepository {
 			
 			return model;			
 		}
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		
 		return model;
 	}
 	
 	public ModelLoginServlet buscarId(String id) throws SQLException {
 		ModelLoginServlet model = new ModelLoginServlet();
-		String sql="SELECT * FROM model_login where id = ?";		
+		String sql="SELECT * FROM model_login where id = ?";	
+		try {
 		PreparedStatement statement= connection.prepareStatement(sql);
 		statement.setLong(1, Long.parseLong(id));
 		ResultSet resultado = statement.executeQuery();
@@ -252,7 +270,10 @@ public class DAOLoginRepository {
 			
 			return model;			
 		}
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		
 		return model;
 	}
@@ -262,6 +283,7 @@ public class DAOLoginRepository {
 	public boolean isNew(String login) throws SQLException {
 		
 		String sql ="select count(1) >0 as existe from model_login where upper(login) =upper(?)";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1,login);
 		ResultSet resultado = statement.executeQuery();
@@ -269,23 +291,32 @@ public class DAOLoginRepository {
 		if(resultado.next()) {
 			return resultado.getBoolean("existe");
 		}
-			
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		return false;
 	}
 	
 	public void deletar(String idUser) throws SQLException {
 		String sql = "DELETE FROM public.model_login WHERE id = ? and usuarioadmin = false";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, Long.parseLong(idUser));
 		
 		statement.executeUpdate();
 		connection.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		
 	}
 	
 	public BeanGrafico buscarUsuariosAdmin() throws SQLException {
 		BeanGrafico dados = new BeanGrafico();
 		String sql = "select count(1) usuarioadmin from model_login group by usuarioadmin";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet resultado= statement.executeQuery();
 		String[] rotulos = {"Comuns","Administradores"};
@@ -299,6 +330,11 @@ public class DAOLoginRepository {
 		dados.setValores(inf);
 		
 		return dados;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return dados;
 	}
 
 	public int buscarNomePg(String nome, long id) throws SQLException{
@@ -309,7 +345,7 @@ public class DAOLoginRepository {
 		List<ModelLoginServlet> nomes = new ArrayList<ModelLoginServlet>();
 		
 		String sql = "select count(1) as total from model_login where upper(nome) like upper(?) and usuarioadmin= false and usuario_id= "+id+"limit 5";
-		
+		try {
 		PreparedStatement buscarNomes= connection.prepareStatement(sql);
 		buscarNomes.setString(1, "%"+nome+"%");
 		ResultSet resultSet=buscarNomes.executeQuery();
@@ -323,7 +359,11 @@ public class DAOLoginRepository {
 		}
 		
 		return paginas.intValue();
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return 0;
 	}
 	
 	public List<ModelLoginServlet> buscarNomePaginado(String nome, long id,String pg) throws SQLException{
@@ -334,7 +374,7 @@ public class DAOLoginRepository {
 		List<ModelLoginServlet> nomes = new ArrayList<ModelLoginServlet>();
 		
 		String sql = "select * from model_login where upper(nome) like upper(?) and usuarioadmin= false and usuario_id= "+id+"offset " +pg+ "limit 5";
-		
+		try {
 		PreparedStatement buscarNomes= connection.prepareStatement(sql);
 		buscarNomes.setString(1, "%"+nome+"%");
 		ResultSet resultSet=buscarNomes.executeQuery();
@@ -364,6 +404,11 @@ public class DAOLoginRepository {
 		
 		
 		return nomes;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 	}
 	
 	
@@ -375,7 +420,7 @@ public class DAOLoginRepository {
 		List<ModelLoginServlet> nomes = new ArrayList<ModelLoginServlet>();
 		
 		String sql = "select * from model_login where upper(nome) like upper(?) and usuarioadmin= false and usuario_id= "+id+"limit 5";
-		
+		try {
 		PreparedStatement buscarNomes= connection.prepareStatement(sql);
 		buscarNomes.setString(1, "%"+nome+"%");
 		ResultSet resultSet=buscarNomes.executeQuery();
@@ -405,10 +450,16 @@ public class DAOLoginRepository {
 		
 		
 		return nomes;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 	}
 	
 	public int totalPagina(Long userLogado) throws SQLException {
 		String sql = "select count(1) as total from model_login where usuario_id ="+userLogado;
+		try {
 		PreparedStatement statementUser = connection.prepareStatement(sql);
 		ResultSet resultado= statementUser.executeQuery();
 		resultado.next();
@@ -420,11 +471,16 @@ public class DAOLoginRepository {
 		}
 		
 		return paginas.intValue();
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return 0;
 	}
 	
 	public List<ModelLoginServlet> buscarUsuariosPaginados(Long id, int offset ) throws SQLException {
 		String sql = "select * from model_login where usuarioadmin = false and usuario_id= "+id +"order by nome offset "+offset+" limit 5";
-		
+		try {
 		PreparedStatement statementUser = connection.prepareStatement(sql);
 		ResultSet resultado= statementUser.executeQuery();
 		List<ModelLoginServlet> usuarios = new ArrayList<ModelLoginServlet>();
@@ -450,12 +506,18 @@ public class DAOLoginRepository {
 		}
 		
 		return usuarios;	
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+			
+		}
 		
+		return null;
 	}
 	
 	public List<ModelLoginServlet> filtrarData(Long id, Date dataInicial, Date dataFinal) throws SQLException {
 		String sql = "select * from model_login where usuario_id= "+id+" and datanascimento >= '"+dataInicial+ "' and datanascimento <= '"+dataFinal+"'";
-		
+		try {
 		PreparedStatement statementUser = connection.prepareStatement(sql);
 		ResultSet resultado= statementUser.executeQuery();
 		List<ModelLoginServlet> usuarios = new ArrayList<ModelLoginServlet>();
@@ -481,13 +543,18 @@ public class DAOLoginRepository {
 		}
 		
 		return usuarios;	
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 		
 	} 
 
 	
 	public List<ModelLoginServlet> buscarUsuarios(Long id ) throws SQLException {
 		String sql = "select * from model_login where usuarioadmin = false and usuario_id= "+id+"limit 5";
-		
+		try {
 		PreparedStatement statementUser = connection.prepareStatement(sql);
 		ResultSet resultado= statementUser.executeQuery();
 		List<ModelLoginServlet> usuarios = new ArrayList<ModelLoginServlet>();
@@ -513,12 +580,17 @@ public class DAOLoginRepository {
 		}
 		
 		return usuarios;	
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 		
+		return null;
 	}
 	
 	public List<ModelLoginServlet> buscarTodosUsuarios(Long id ) throws SQLException {
 		String sql = "select * from model_login where usuarioadmin = false and usuario_id= "+id;
-		
+		try {
 		PreparedStatement statementUser = connection.prepareStatement(sql);
 		ResultSet resultado= statementUser.executeQuery();
 		List<ModelLoginServlet> usuarios = new ArrayList<ModelLoginServlet>();
@@ -544,6 +616,11 @@ public class DAOLoginRepository {
 		}
 		
 		return usuarios;	
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 		
 	}
 }
