@@ -27,6 +27,7 @@ public class DAOTelefoneRepository {
 
 		String sql = "insert into telefone (numero, usuario_pai_id, usuario_cad_id) values(?,?,?)";
 
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		statement.setString(1, modelTelefone.getNumero());
@@ -35,12 +36,17 @@ public class DAOTelefoneRepository {
 
 		statement.execute();
 		connection.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 	}
 
 	public void updateTelefone(ModelTelefone modelTelefone, String telefone) throws SQLException {
 
 		String sql = "update telefone set numero =?, usuario_pai_id = ?, usuario_cad_id = ? where numero = ?";
 
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		statement.setString(1, modelTelefone.getNumero());
@@ -50,16 +56,25 @@ public class DAOTelefoneRepository {
 
 		statement.executeUpdate();
 		connection.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 
 	}
 
 	public void deletarTelefone(String numero) throws SQLException {
 		String sql = "delete from telefone where numero =?";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		statement.setString(1, numero);
 		statement.executeUpdate();
 		connection.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
 
 	}
 
@@ -67,7 +82,7 @@ public class DAOTelefoneRepository {
 
 		ModelTelefone tl = new ModelTelefone();
 		String sql = "select * from telefone where usuario_pai_id = ?";
-
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, Long.parseLong(id));
 
@@ -81,6 +96,11 @@ public class DAOTelefoneRepository {
 		}
 
 		return tl;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 	}
 
 	public ModelTelefone buscarId(String id) throws SQLException {
@@ -88,6 +108,7 @@ public class DAOTelefoneRepository {
 		ModelTelefone tl = new ModelTelefone();
 		String sql = "select * from telefone where id = ?";
 
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setInt(1, Integer.parseInt(id));
 
@@ -101,10 +122,16 @@ public class DAOTelefoneRepository {
 		}
 
 		return tl;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 	}
 
 	public boolean isNew(String numero) throws SQLException {
 		String sql = "select count(2) as existe from telefone  where numero = ?";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, numero);
 		ResultSet rs = statement.executeQuery();
@@ -116,12 +143,18 @@ public class DAOTelefoneRepository {
 		boolean isNew = (existe >= 1 ? false : true);
 
 		return isNew;
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return false;
 	}
 
 	public List<ModelTelefone> listFones(Long id) throws SQLException {
 
 		List<ModelTelefone> telefones = new ArrayList<ModelTelefone>();
 		String sql = "select * from telefone where usuario_pai_id = ?";
+		try {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, id);
 		ResultSet rs = statement.executeQuery();
@@ -137,7 +170,12 @@ public class DAOTelefoneRepository {
 		}
 
 		return telefones;
-
+		}catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+		return null;
 	}
+
 
 }

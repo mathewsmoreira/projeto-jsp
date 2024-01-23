@@ -69,7 +69,7 @@
 																		<input type="hidden"
 																			value="${modelLogin.numero}" id="nuAnt"
 																			name="nuAnt">
-																		<input type="text" name="Numero" id="Numero"
+																		<input type="text" name="Numero" onblur="limitar_caracteres(event)" id="Numero"
 																			class="form-control phone"
 																			required="required"
 																			value="${modelLogin.numero}"
@@ -192,6 +192,21 @@
 						document.getElementById("formTelefone").submit();
 					}
 
+				}
+				
+				function limitar_caracteres(event){
+					
+					var elementoId = $(event.target).attr("id");
+					
+					if(elementoId == "Numero"){
+						var valor = $(event.target).val();
+						
+						valor = valor.slice(0,50);
+						$(event.target).val(valor)
+					}
+					}
+					
+					
 				}
 			</script>
 		</body>
